@@ -48,3 +48,5 @@ def main():
         mqttc.client.loop_stop()
         mqttc.client.disconnect()
 
+if __name__ == "__main__":
+    main()
