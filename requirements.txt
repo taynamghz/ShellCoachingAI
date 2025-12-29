@@ -3,4 +3,5 @@ numpy==2.0.1
 pyarrow
 paho-mqtt==2.1.0
 python-dateutil
+python-dotenv
 

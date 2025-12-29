@@ -1,9 +1,9 @@
 # src/main.py
 import time
-from config import CONFIG
-from mqtt_client import MqttClient
-from artifacts import load_artifacts
-from coach import Coach
+from src.config import CONFIG
+from src.mqtt_client import MqttClient
+from src.artifacts import load_artifacts
+from src.coach import Coach
 
 def main():
     track, stop_lines_s, turn_segs, zone_memory = load_artifacts(CONFIG["ARTIFACTS_DIR"])

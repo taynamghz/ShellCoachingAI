@@ -1,15 +1,20 @@
 # src/config.py
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # =====================
 # MQTT BROKER CONFIG
 # =====================
 
-MQTT_HOST = "8fac0c92ea0a49b8b56f39536ba2fd78.s1.eu.hivemq.cloud"
-MQTT_PORT = 8884
-MQTT_TLS  = True
+MQTT_HOST = os.getenv("MQTT_HOST", "8fac0c92ea0a49b8b56f39536ba2fd78.s1.eu.hivemq.cloud")
+MQTT_PORT = int(os.getenv("MQTT_PORT", "8883"))
+MQTT_TLS  = os.getenv("MQTT_TLS", "True").lower() == "true"
 
-MQTT_USERNAME = "ShellJM"
-MQTT_PASSWORD = "psuEcoteam1st"
+MQTT_USERNAME = os.getenv("MQTT_USERNAME", "ShellJM")
+MQTT_PASSWORD = os.getenv("MQTT_PASSWORD", "psuEcoteam1st")
 
 # =====================
 # TOPICS
