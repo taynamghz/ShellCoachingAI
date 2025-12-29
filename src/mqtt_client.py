@@ -59,23 +59,25 @@ class MqttClient:
         except Exception:
             return
 
-        # Handle control topic for session gating
+        # CONTROL
         if msg.topic == self.cfg["CONTROL_TOPIC"]:
             if self._on_control_cb:
                 self._on_control_cb(payload)
-            # Parse control message (support both formats)
-            if "enabled" in payload:
-                self.session_enabled = bool(payload["enabled"])
-                print(f"[MQTT] Session enabled={self.session_enabled} via control topic")
-                return
+            # Accept BOTH payload styles:
+            # 1) {"action":"enable"/"disable"}
+            # 2) {"enabled": true/false}
+            enabled = payload.get("enabled", None)
 
-            action = payload.get("action", "").lower()
+            action = str(payload.get("action", "")).lower().strip()
             if action == "enable":
-                self.session_enabled = True
-                print("[MQTT] Session enabled via control topic")
+                enabled = True
             elif action == "disable":
-                self.session_enabled = False
-                print("[MQTT] Session disabled via control topic")
+                enabled = False
+
+            if enabled is not None:
+                self.session_enabled = bool(enabled)
+                print(f"[MQTT] Session enabled={self.session_enabled} via control topic")
+
             return
 
         # Handle telemetry only if session is enabled
