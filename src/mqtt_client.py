@@ -63,7 +63,12 @@ class MqttClient:
         if msg.topic == self.cfg["CONTROL_TOPIC"]:
             if self._on_control_cb:
                 self._on_control_cb(payload)
-            # Parse control message
+            # Parse control message (support both formats)
+            if "enabled" in payload:
+                self.session_enabled = bool(payload["enabled"])
+                print(f"[MQTT] Session enabled={self.session_enabled} via control topic")
+                return
+
             action = payload.get("action", "").lower()
             if action == "enable":
                 self.session_enabled = True
