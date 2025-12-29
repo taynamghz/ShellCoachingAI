@@ -80,7 +80,8 @@ class MqttClient:
 
             return
 
-        # Handle telemetry only if session is enabled
+        # TELEMETRY
         if msg.topic == self.cfg["TELEMETRY_TOPIC"]:
+            print("[TEL] got telemetry", payload)   # TEMP DEBUG
             if self.session_enabled and self._on_msg_cb:
                 self._on_msg_cb(payload)
