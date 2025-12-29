@@ -175,6 +175,33 @@ ShellOffTrack/
 - **Status**: `coach/status` (heartbeat)
 - **Control**: `coach/control` (session gating)
 
+## Export Pipeline
+
+### Generating zone_memory.parquet
+
+The coaching system requires `artifacts/zone_memory.parquet` to function. This file contains optimal driving parameters for each zone.
+
+**Generate the file:**
+
+```bash
+python export_zone_memory.py
+```
+
+This script:
+- Reads track artifacts (`track.json`, `stop_lines.json`, `turn_zones.json`)
+- Generates optimal values for all zones (STRAIGHT, TURN_*, STOP_*_APPROACH)
+- Creates `artifacts/zone_memory.parquet`
+
+**Options:**
+```bash
+python export_zone_memory.py --artifacts-dir artifacts --output artifacts/zone_memory.parquet
+```
+
+**Note:** The default values in the export script are placeholders. For production, you should:
+1. Analyze optimal driving data from your track
+2. Update the `generate_zone_memory()` function with real optimal values
+3. Or modify the script to load optimal values from your analysis pipeline
+
 ## Configuration
 
 Configuration is managed through:
