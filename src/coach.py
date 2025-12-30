@@ -38,7 +38,8 @@ class Coach:
         """
 
         # -------- 1) extract fields (robust to missing keys) --------
-        ts = float(msg.get("timestamp", time.time()))
+        # Support both "timestamp" and "ts" fields
+        ts = float(msg.get("timestamp") or msg.get("ts", time.time()))
         lat = msg.get("latitude", None)
         lon = msg.get("longitude", None)
         speed_kmh = msg.get("speed", None)
@@ -47,6 +48,7 @@ class Coach:
         voltage_v = msg.get("voltage", None)
 
         if lat is None or lon is None or speed_kmh is None:
+            print(f"[DEBUG] Missing required fields: lat={lat}, lon={lon}, speed={speed_kmh}")  # TEMP DEBUG
             return None
 
         lat = float(lat); lon = float(lon)
@@ -124,6 +126,7 @@ class Coach:
             self.buf.popleft()
 
         if len(self.buf) < int(self.cfg["MIN_SAMPLES_FOR_CUE"]):
+            print(f"[DEBUG] Buffer too small: {len(self.buf)} < {self.cfg['MIN_SAMPLES_FOR_CUE']}")  # TEMP DEBUG
             return None
 
         # -------- 4) light smoothing (rolling median) --------
@@ -159,6 +162,7 @@ class Coach:
 
         # -------- 6) lookup zone optimal --------
         if zone_id not in self.zone_memory.index:
+            print(f"[DEBUG] Zone {zone_id} not found in zone_memory. Available zones: {list(self.zone_memory.index)}")  # TEMP DEBUG
             return None
 
         ref = self.zone_memory.loc[zone_id]

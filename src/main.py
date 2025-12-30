@@ -20,6 +20,8 @@ def main():
         if cue is not None:
             mqttc.publish_json(CONFIG["CUES_TOPIC"], cue)
             print("[CUE]", cue["cue_text"])
+        else:
+            print("[DEBUG] coach.ingest returned None")  # TEMP DEBUG
 
     mqttc.set_message_handler(handle_msg)
     mqttc.connect()
